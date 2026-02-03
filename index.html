@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For You 💕</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #fce7f3, #e9d5ff);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .card {
+      background: white;
+      padding: 100px 150px;
+      border-radius: 28px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+      max-width: 420px;
+      animation: float 4s ease-in-out infinite;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes float {
+      50% { transform: translateY(-6px); }
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: #c084fc;
+      font-size: 40px;
+    }
+
+    p {
+      color: #6b7280;
+      line-height: 1.6;
+      font-size: 22px;
+    }
+
+    .soft-note {
+      font-size: 16px;
+      color: #9ca3af;
+      margin-top: 18px;
+    }
+
+    .closing {
+      font-family: 'Playfair Display', serif;
+      color: #ec4899;
+      margin-top: 20px;
+    }
+
+    button {
+      margin-top: 28px;
+      padding: 14px 34px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg,#f472b6,#c084fc);
+      color: white;
+      box-shadow: 0 8px 20px rgba(192,132,252,0.35);
+      font-family: 'Poppins', sans-serif;
+      font-size: 18px;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 18px;
+      color: rgba(236,72,153,0.35);
+      animation: floatUp linear forwards;
+      pointer-events: none;
+      z-index: 1;
+    }
+    button:hover {
+  transform: scale(1.04);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-100vh) scale(1.4);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hey Nihaalu ❤️</h1>
+
+    <p>
+      I made this little corner because some moments deserve to be held gently.
+      <br><br>
+      Being with you has been my favorite part of every ordinary day,
+      and I’m really grateful that life led me to you.
+    </p>
+
+    <p class="soft-note">This one’s for you 💌</p>
+    <p class="closing">Always thinking of you.</p>
+    <p id="timeNote" class="soft-note"></p>
+
+    <button id="nextBtn" onclick="goNext()" disabled>
+  Just one more thing 💌
+</button>
+
+  </div>
+
+  <script>
+    // Floating hearts
+    setInterval(() => {
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.innerText = "❤";
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.animationDuration = (4 + Math.random() * 4) + "s";
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 8000);
+    }, 700);
+
+    // Navigate to page 2 (this click allows autoplay!)
+    function goNext() {
+  document.querySelectorAll(".heart").forEach(h => {
+    h.style.transition = "opacity 0.6s ease";
+    h.style.opacity = 0;
+  });
+
+  document.body.style.opacity = 0;
+
+  setTimeout(() => {
+    window.location.href = "valentine.html";
+  }, 600);
+}
+
+    const hour = new Date().getHours();
+const note = document.getElementById("timeNote");
+
+if (hour < 12) {
+  note.textContent = "I hope this starts your day softly.";
+} else if (hour < 18) {
+  note.textContent = "I hope this makes you smile today.";
+} else {
+  note.textContent = "I hope this ends your day gently.";
+}
+setTimeout(() => {
+  document.getElementById("nextBtn").disabled = false;
+}, 1000);
+
+  </script>
+
+</body>
+</html>

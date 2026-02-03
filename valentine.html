@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Just One Question 💕</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #fce7f3, #e9d5ff);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+    }
+
+    /* MAIN CARD */
+    .card {
+      background: white;
+      padding: 90px 120px;
+      border-radius: 28px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+      position: relative;
+      z-index: 2;
+      transition: opacity 0.6s ease, filter 0.6s ease;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .card.dim {
+      opacity: 0.35;
+      filter: blur(1px);
+    }
+
+    @keyframes float {
+      50% { transform: translateY(-6px); }
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: #c084fc;
+      font-size: 40px;
+    }
+
+    p {
+      color: #6b7280;
+      font-size: 22px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 140px;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 14px 34px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #yesBtn {
+      background: linear-gradient(135deg, #f472b6, #c084fc);
+      color: white;
+    }
+
+    #noBtn {
+      background: #fdf2f8;
+      color: #ec4899;
+      position: absolute;
+    }
+
+    .yes {
+      display: none;
+      margin-top: 30px;
+      font-family: 'Playfair Display', serif;
+      color: #ec4899;
+      font-size: 26px;
+    }
+
+    /* CONFETTI */
+    .confetti {
+      position: fixed;
+      top: -10px;
+      width: 10px;
+      height: 10px;
+      animation: confettiFall linear forwards;
+      z-index: 10;
+    }
+
+    @keyframes confettiFall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* LETTER */
+    .letter-wrapper {
+      display: none;
+      position: absolute;
+      z-index: 6;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 40px);
+      opacity: 0;
+    }
+
+    .letter-wrapper.show {
+      display: block;
+      animation: slideIn 0.9s ease forwards;
+    }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translate(-50%, -20px);
+      }
+    }
+
+    .letter-card {
+      width: min(90vw, 500px);
+  height: auto;
+  min-height: 260px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f472b6, #c084fc);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: box-shadow 0.4s ease;
+      perspective: 1000px;
+      position: relative;
+    }
+
+    .letter-card:hover {
+      box-shadow:
+        0 0 30px rgba(236,72,153,0.4),
+        0 0 60px rgba(192,132,252,0.3);
+    }
+
+    .letter-front,
+    .letter-inside {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      transition: transform 0.9s ease;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .letter-front {
+      color: white;
+    }
+
+    .letter-inside {
+      background: white;
+      color: #ec4899;
+      transform: rotateY(180deg);
+    }
+
+    .letter-wrapper.open .letter-front {
+      transform: rotateY(180deg);
+    }
+
+    .letter-wrapper.open .letter-inside {
+      transform: rotateY(360deg);
+    }
+    .letter-content {
+  line-height: 1.6;
+}
+
+.letter-days {
+  font-size: 34px;
+  font-weight: 600;
+  color: #ec4899;
+  margin-bottom: 10px;
+}
+
+.letter-line {
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.letter-soft {
+  font-size: 17px;
+  color: #9d174d;
+  font-style: italic;
+}
+
+.letter-sign {
+  margin-top: 16px;
+  font-size: 16px;
+  color: #c084fc;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- MUSIC -->
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="card">
+    <h1>Will you be my Valentine? 💖</h1>
+    <p>No is not an option 😉</p>
+
+    <div class="buttons">
+      <button id="yesBtn" onclick="sayYes()">YES 💘</button>
+      <button id="noBtn" onmouseover="moveNo()">NO 😝</button>
+    </div>
+
+    <div class="yes" id="yesMessage">
+      Happy Valentine’s Day ❤️<br>
+      I knew it had to be you.
+    </div>
+  </div>
+
+  <!-- LETTER -->
+  <div class="letter-wrapper" id="letter" onclick="openLetter()">
+    <div class="letter-card">
+      <div class="letter-front">Open me 💌</div>
+      <div class="letter-inside" id="daysText"></div>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+
+    /* MUSIC – starts on first interaction */
+    const music = document.getElementById("bgMusic");
+    let musicStarted = false;
+
+    function startMusic() {
+      if (musicStarted) return;
+      musicStarted = true;
+      music.volume = 0;
+      music.play();
+
+      let v = 0;
+      const fade = setInterval(() => {
+        v += 0.05;
+        music.volume = Math.min(v, 0.8);
+        if (v >= 0.8) clearInterval(fade);
+      }, 150);
+
+      document.removeEventListener("click", startMusic);
+      document.removeEventListener("mousemove", startMusic);
+      document.removeEventListener("touchstart", startMusic);
+    }
+
+    document.addEventListener("click", startMusic);
+    document.addEventListener("mousemove", startMusic);
+    document.addEventListener("touchstart", startMusic);
+
+    /* NO button */
+    function moveNo() {
+      noBtn.style.transform =
+        `translate(${Math.random()*300-150}px, ${Math.random()*120-60}px)`;
+    }
+
+    /* YES button */
+    function sayYes() {
+      document.getElementById("yesMessage").style.display = "block";
+      document.getElementById("noBtn").style.display = "none";
+      document.querySelector(".card").classList.add("dim");
+
+      launchConfetti();
+
+      // slide letter AFTER confetti moment
+      setTimeout(() => {
+        document.getElementById("letter").classList.add("show");
+      }, 2000);
+    }
+
+    /* LETTER OPEN */
+    const startDate = new Date("2023-01-10"); // change if needed
+
+    function openLetter() {
+  const wrapper = document.getElementById("letter");
+  wrapper.classList.add("open");
+
+  const days = Math.floor(
+    (new Date() - startDate) / (1000 * 60 * 60 * 24)
+  );
+
+  document.getElementById("daysText").innerHTML = `
+    <div class="letter-content">
+      <div class="letter-days">
+        ${days} days 🤍
+      </div>
+
+      <div class="letter-line">
+        of choosing each other.
+      </div>
+
+      <div class="letter-soft">
+        and I’d still choose you,<br>
+        every single time.
+      </div>
+
+      <div class="letter-sign">
+        — always your Parn
+      </div>
+    </div>
+  `;
+}
+
+
+    /* CONFETTI */
+    function launchConfetti() {
+      const colors = ["#f472b6","#c084fc","#fde68a","#a7f3d0"];
+      for (let i = 0; i < 80; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.animationDuration = (2 + Math.random() * 2) + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+      }
+    }
+  </script>
+
+</body>
+</html>
